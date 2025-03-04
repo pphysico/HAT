@@ -1,5 +1,6 @@
 import torch
 from torch.nn import functional as F
+from accelerate import Accelerator
 
 from basicsr.utils.registry import MODEL_REGISTRY
 from basicsr.models.sr_model import SRModel
@@ -12,6 +13,10 @@ from os import path as osp
 
 @MODEL_REGISTRY.register()
 class HATModel(SRModel):
+
+    def __init__(self, opt):
+        super(HATModel, self).__init__(opt)
+        self.accelerator = Accelerator()
 
     def pre_process(self):
         # pad to multiplication of window_size
